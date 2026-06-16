@@ -33,6 +33,11 @@ const palette = {
 
   neutral100: '#FFFFFF',
   secondary500: '#2F3656',
+
+  cream: '#F4EFD7',
+  lightBlue: '#E4F0FC',
+  progressGreen: '#7CA62B',
+  timelineGray: '#E4E4E4',
 } as const;
 
 export const colors = {
