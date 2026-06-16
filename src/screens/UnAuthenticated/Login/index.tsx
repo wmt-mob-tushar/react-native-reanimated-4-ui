@@ -4,14 +4,12 @@ import { Button, Screen, Text } from '@/component';
 import { translate } from '@/i18n/translate';
 import { useAppDispatch } from '@/reduxToolkit/hooks';
 import { setToken, setUser } from '@/reduxToolkit/rootSlice';
-import { useAppTheme, useStyles } from '@/theme';
+import { colors } from '@/theme';
 import { isValidEmail } from '@/utils';
-import { createStyles } from './styles';
+import { styles } from './styles';
 
 const Login = () => {
   const dispatch = useAppDispatch();
-  const { theme } = useAppTheme();
-  const styles = useStyles(createStyles);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -32,7 +30,7 @@ const Login = () => {
       <Text
         preset="default"
         tx="loginScreen:subtitle"
-        color={theme.colors.textDim}
+        color={colors.textDim}
         style={styles.subtitle}
       />
 
@@ -44,7 +42,7 @@ const Login = () => {
         autoCapitalize="none"
         keyboardType="email-address"
         placeholder={translate('loginScreen:emailFieldPlaceholder')}
-        placeholderTextColor={theme.colors.textDim}
+        placeholderTextColor={colors.textDim}
       />
 
       <Text preset="label" tx="loginScreen:passwordFieldLabel" style={styles.label} />
@@ -54,11 +52,11 @@ const Login = () => {
         onChangeText={setPassword}
         secureTextEntry
         placeholder={translate('loginScreen:passwordFieldPlaceholder')}
-        placeholderTextColor={theme.colors.textDim}
+        placeholderTextColor={colors.textDim}
       />
 
       {error ? (
-        <Text preset="label" text={error} color={theme.colors.error} style={styles.error} />
+        <Text preset="label" text={error} color={colors.error} style={styles.error} />
       ) : null}
 
       <View style={styles.footer}>

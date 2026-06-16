@@ -2,10 +2,9 @@
   "extends": "@react-native/typescript-config",
   "compilerOptions": {
     "types": ["jest", "react-native-vector-icons"],
-    "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"],
-      "@assets/*": ["assets/*"]
+      "@/*": ["./src/*"],
+      "@assets/*": ["./assets/*"]
     }
   },
   "include": ["**/*.ts", "**/*.tsx"],

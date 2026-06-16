@@ -1,7 +1,7 @@
-import { DarkTheme, DefaultTheme, NavigationContainer, Theme } from '@react-navigation/native';
+import { DefaultTheme, NavigationContainer, Theme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useAppSelector } from '@/reduxToolkit/hooks';
-import { useAppTheme } from '@/theme';
+import { colors } from '@/theme';
 import Authenticated from './Authenticated';
 import { navigationRef } from './RootNavigation';
 import { RootStackParamList } from './navigationTypes';
@@ -9,22 +9,20 @@ import UnAuthenticated from './UnAuthenticated';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-const Navigator = () => {
-  const { theme } = useAppTheme();
-  const isAuthenticated = useAppSelector(state => !!state.app.token);
+const navTheme: Theme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    primary: colors.tint,
+    background: colors.background,
+    card: colors.background,
+    text: colors.text,
+    border: colors.separator,
+  },
+};
 
-  const base = theme.isDark ? DarkTheme : DefaultTheme;
-  const navTheme: Theme = {
-    ...base,
-    colors: {
-      ...base.colors,
-      primary: theme.colors.tint,
-      background: theme.colors.background,
-      card: theme.colors.background,
-      text: theme.colors.text,
-      border: theme.colors.separator,
-    },
-  };
+const Navigator = () => {
+  const isAuthenticated = useAppSelector(state => !!state.app.token);
 
   return (
     <NavigationContainer ref={navigationRef} theme={navTheme}>

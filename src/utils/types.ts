@@ -1,7 +1,5 @@
 export type LanguageCode = 'en' | 'es';
 
-export type ThemeMode = 'light' | 'dark';
-
 export interface UserData {
   id: string;
   name: string;

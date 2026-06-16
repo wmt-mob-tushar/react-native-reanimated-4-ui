@@ -1,12 +1,11 @@
 import { StyleSheet } from 'react-native';
-import { Theme } from '@/theme';
+import { spacing } from '@/theme';
 
-export const createStyles = (theme: Theme) =>
-  StyleSheet.create({
-    name: {
-      marginTop: theme.spacing.xs,
-    },
-    welcome: {
-      marginTop: theme.spacing.md,
-    },
-  });
+export const styles = StyleSheet.create({
+  name: {
+    marginTop: spacing.xs,
+  },
+  welcome: {
+    marginTop: spacing.md,
+  },
+});

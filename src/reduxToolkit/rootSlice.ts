@@ -1,5 +1,5 @@
 import { createSlice, createAction, PayloadAction } from '@reduxjs/toolkit';
-import { EventItem, LanguageCode, ThemeMode, UserData } from '@/utils/types';
+import { EventItem, LanguageCode, UserData } from '@/utils/types';
 
 export const logout = createAction('LOGOUT');
 
@@ -8,7 +8,6 @@ interface InitialState {
   token: string;
   favorites: EventItem[];
   language: LanguageCode;
-  theme: ThemeMode;
 }
 
 const initialState: InitialState = {
@@ -16,7 +15,6 @@ const initialState: InitialState = {
   token: '',
   favorites: [],
   language: 'en',
-  theme: 'light',
 };
 
 const rootSlice = createSlice({
@@ -31,9 +29,6 @@ const rootSlice = createSlice({
     },
     setLanguage: (state, action: PayloadAction<LanguageCode>) => {
       state.language = action.payload;
-    },
-    setTheme: (state, action: PayloadAction<ThemeMode>) => {
-      state.theme = action.payload;
     },
     toggleFavorite: (state, action: PayloadAction<EventItem>) => {
       const index = state.favorites.findIndex(
@@ -53,11 +48,10 @@ const rootSlice = createSlice({
     builder.addCase(logout, state => ({
       ...initialState,
       language: state.language,
-      theme: state.theme,
     })),
 });
 
-export const { setUser, setToken, setLanguage, setTheme, toggleFavorite, clearFavorites } =
+export const { setUser, setToken, setLanguage, toggleFavorite, clearFavorites } =
   rootSlice.actions;
 
 export default rootSlice.reducer;

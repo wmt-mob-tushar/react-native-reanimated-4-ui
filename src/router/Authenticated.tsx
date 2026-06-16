@@ -4,9 +4,9 @@ import { translate } from '@/i18n/translate';
 import Home from '@/screens/Authenticated/Home';
 import Profile from '@/screens/Authenticated/Profile';
 import Settings from '@/screens/Authenticated/Settings';
-import { useAppTheme, useStyles } from '@/theme';
+import { colors } from '@/theme';
 import { MainTabParamList } from './navigationTypes';
-import { createTabStyles } from './styles';
+import { tabStyles } from './styles';
 
 const Tab = createBottomTabNavigator<MainTabParamList>();
 
@@ -23,16 +23,13 @@ const renderTabBarIcon =
   );
 
 const Authenticated = () => {
-  const { theme } = useAppTheme();
-  const styles = useStyles(createTabStyles);
-
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
         headerShown: false,
-        tabBarActiveTintColor: theme.colors.tint,
-        tabBarInactiveTintColor: theme.colors.textDim,
-        tabBarStyle: styles.tabBar,
+        tabBarActiveTintColor: colors.tint,
+        tabBarInactiveTintColor: colors.textDim,
+        tabBarStyle: tabStyles.tabBar,
         tabBarIcon: renderTabBarIcon(route.name),
       })}>
       <Tab.Screen name="Home" component={Home} options={{ tabBarLabel: translate('tabs:home') }} />

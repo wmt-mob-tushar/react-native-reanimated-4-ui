@@ -1,11 +1,9 @@
 import { Screen, Text } from '@/component';
 import { useAppSelector } from '@/reduxToolkit/hooks';
-import { useAppTheme, useStyles } from '@/theme';
-import { createStyles } from './styles';
+import { colors } from '@/theme';
+import { styles } from './styles';
 
 const Home = () => {
-  const { theme } = useAppTheme();
-  const styles = useStyles(createStyles);
   const { user } = useAppSelector(state => state.app);
 
   return (
@@ -14,7 +12,7 @@ const Home = () => {
       <Text
         preset="subheading"
         text={user?.name ?? ''}
-        color={theme.colors.textDim}
+        color={colors.textDim}
         style={styles.name}
       />
       <Text preset="default" tx="homeScreen:welcome" style={styles.welcome} />

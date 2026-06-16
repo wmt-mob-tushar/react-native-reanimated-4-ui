@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { StatusBar, StyleSheet } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { useTranslation } from 'react-i18next';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
@@ -13,7 +14,10 @@ import Splash from '@/screens/Splash';
 const Root = () => {
   const [ready, setReady] = useState(false);
   const language = useAppSelector(state => state.app.language);
-  const themeMode = useAppSelector(state => state.app.theme);
+
+  // Subscribe to i18next's languageChanged so the whole tree re-renders
+  // AFTER changeLanguage() resolves — keeps every translate() call in sync.
+  useTranslation();
 
   useEffect(() => {
     initI18n().then(() => setReady(true));
@@ -31,7 +35,7 @@ const Root = () => {
 
   return (
     <>
-      <StatusBar barStyle={themeMode === 'dark' ? 'light-content' : 'dark-content'} />
+      <StatusBar barStyle="dark-content" />
       <Navigator />
     </>
   );

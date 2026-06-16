@@ -1,8 +1,7 @@
 import { ReactNode } from 'react';
 import { ScrollView, StyleProp, View, ViewStyle } from 'react-native';
 import { Edge, SafeAreaView } from 'react-native-safe-area-context';
-import { useStyles } from '@/theme';
-import { createStyles } from './styles';
+import { styles } from './styles';
 
 export interface ScreenProps {
   children: ReactNode;
@@ -20,7 +19,6 @@ export const Screen = (props: ScreenProps) => {
     style,
     contentContainerStyle,
   } = props;
-  const styles = useStyles(createStyles);
 
   return (
     <SafeAreaView edges={safeAreaEdges} style={[styles.container, style]}>
