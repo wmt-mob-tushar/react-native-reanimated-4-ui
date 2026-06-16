@@ -2,11 +2,12 @@ import rootReducer, {
   clearFavorites,
   logout,
   setLanguage,
+  setTheme,
   setToken,
   setUser,
   toggleFavorite,
 } from '@/reduxToolkit/rootSlice';
-import { EventItem } from '@/utils/Types';
+import { EventItem } from '@/utils/types';
 import { isValidEmail } from '@/utils';
 
 const event: EventItem = { event_date_id: 'e1', title: 'Concert', date: '2026-01-01' };
@@ -40,16 +41,23 @@ describe('rootSlice', () => {
     expect(rootReducer(added, clearFavorites()).favorites).toEqual([]);
   });
 
+  it('defaults to the light theme and updates it', () => {
+    expect(initial.theme).toBe('light');
+    expect(rootReducer(initial, setTheme('dark')).theme).toBe('dark');
+  });
+
   it('updates language', () => {
     expect(rootReducer(initial, setLanguage('es')).language).toBe('es');
   });
 
-  it('keeps language but resets the rest on logout', () => {
+  it('keeps language and theme but resets the rest on logout', () => {
     let state = rootReducer(initial, setLanguage('es'));
+    state = rootReducer(state, setTheme('dark'));
     state = rootReducer(state, setToken('abc'));
     const after = rootReducer(state, logout());
     expect(after.token).toBe('');
     expect(after.language).toBe('es');
+    expect(after.theme).toBe('dark');
   });
 });
 

@@ -11,8 +11,8 @@ A bare React Native (TypeScript) boilerplate built for iOS and Android, with Red
 | State | Redux Toolkit + React Redux + redux-persist (AsyncStorage) |
 | Navigation | React Navigation v7 (native-stack root + bottom-tabs) |
 | Styling | `StyleSheet` per-component `styles.ts` + theme tokens (no inline styles) |
-| Theming | Light / Dark / System, stored in Redux |
-| i18n | i18next + react-i18next + react-native-localize (RTL aware) |
+| Theming | Light / Dark, stored in Redux (default light) |
+| i18n | i18next + react-i18next, active language stored in Redux |
 | Icons | react-native-vector-icons (Ionicons) |
 | Networking | axios instance with auth + 401 interceptors |
 
@@ -76,30 +76,42 @@ src/
 
 ## Styling approach
 
-There are no inline styles. Every component and screen has a sibling `styles.ts` exporting
-`createStyles(theme)` which returns a `StyleSheet`. Components consume it with the `useStyles`
-hook, so styles automatically react to the active light/dark theme:
+There are no inline styles. Every component and screen has a sibling `styles.ts` exporting a
+`createStyles(theme)` factory, consumed through the `useStyles` hook so styles rebuild when the
+active theme (light/dark) changes:
 
 ```ts
+// styles.ts
+import { StyleSheet } from 'react-native';
+import { Theme } from '@/theme';
+
+export const createStyles = (theme: Theme) =>
+  StyleSheet.create({
+    container: { flex: 1, backgroundColor: theme.colors.background },
+  });
+
+// component
 const styles = useStyles(createStyles);
 ```
 
 ## State management
 
-- `reduxToolkit/store.ts` configures the store and persists `auth` + `theme` to AsyncStorage.
+- `reduxToolkit/store.ts` configures the store and persists the whole `app` slice to AsyncStorage.
 - `reduxToolkit/hooks.ts` exports typed `useAppDispatch` / `useAppSelector`.
-- Slices: `authSlice` (token, user, isAuthenticated) and `themeSlice` (light/dark/system).
+- `reduxToolkit/rootSlice.ts` is a single `app` slice holding `user`, `token`, `favorites`,
+  `language`, and `theme`. On `logout` everything resets except `language` and `theme`.
 
-Authentication is gated at the root navigator: when `auth.isAuthenticated` is true the bottom-tab
-app renders, otherwise the Login stack renders.
+Authentication is gated at the root navigator: when `app.token` is set the bottom-tab app renders,
+otherwise the Login stack renders.
 
 ## Theming
 
-`useAppTheme()` resolves the active `Theme` from the persisted scheme (`light` / `dark` / `system`,
-where `system` follows the OS via `Appearance`). Change it from the Settings screen.
+Light and dark themes live in `theme/` (Ignite-style tokens) and the active mode is stored in
+Redux (`app.theme`, default `light`). `useAppTheme()` returns the resolved `Theme`, and `useStyles`
+rebuilds a screen's `StyleSheet` whenever it changes. Toggle it from the Settings screen.
 
 ## Internationalization
 
 Translations live in `src/i18n/en.ts` and `src/i18n/es.ts`. Use the typed `tx` prop on `Text` /
-`Button`, or call `translate('namespace:key')`. The device locale is detected at startup and RTL
-layouts are enabled automatically for RTL languages.
+`Button`, or call `translate('namespace:key')`. The active language is stored in Redux
+(`app.language`, persisted) and applied on launch — switch it from the Settings screen.

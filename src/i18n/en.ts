@@ -28,6 +28,9 @@ const en = {
   },
   settingsScreen: {
     title: 'Settings',
+    theme: 'Theme',
+    light: 'Light',
+    dark: 'Dark',
     language: 'Language',
   },
   errors: {

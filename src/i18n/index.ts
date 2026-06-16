@@ -1,6 +1,6 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import { LanguageCode } from '@/utils/Types';
+import { LanguageCode } from '@/utils/types';
 import en, { Translations } from './en';
 import es from './es';
 

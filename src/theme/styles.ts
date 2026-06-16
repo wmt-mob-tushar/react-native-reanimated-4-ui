@@ -1,13 +1,12 @@
-import { ViewStyle } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { spacing } from './spacing';
 
-export const $styles = {
-  row: { flexDirection: 'row' } as ViewStyle,
-  flex1: { flex: 1 } as ViewStyle,
-  flexWrap: { flexWrap: 'wrap' } as ViewStyle,
-
+export const $styles = StyleSheet.create({
+  row: { flexDirection: 'row' },
+  flex1: { flex: 1 },
+  flexWrap: { flexWrap: 'wrap' },
   container: {
     paddingTop: spacing.lg + spacing.xl,
     paddingHorizontal: spacing.lg,
-  } as ViewStyle,
-};
+  },
+});

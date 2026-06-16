@@ -3,15 +3,15 @@ import { Text as RNText, TextProps as RNTextProps, StyleProp, TextStyle } from '
 import { TOptions } from 'i18next';
 import { TxKeyPath } from '@/i18n';
 import { translate } from '@/i18n/translate';
-import { useAppTheme, useStyles } from '@/theme';
+import { TextPreset, TextWeight, useAppTheme, useStyles } from '@/theme';
 import { createStyles, weightFamily } from './styles';
 
 export interface TextProps extends RNTextProps {
   tx?: TxKeyPath;
   text?: string;
   txOptions?: TOptions;
-  preset?: 'default' | 'heading' | 'subheading' | 'label';
-  weight?: 'normal' | 'medium' | 'bold';
+  preset?: TextPreset;
+  weight?: TextWeight;
   size?: number;
   color?: string;
   style?: StyleProp<TextStyle>;

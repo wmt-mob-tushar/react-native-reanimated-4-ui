@@ -1,4 +1,4 @@
-import { DefaultTheme, NavigationContainer, Theme } from '@react-navigation/native';
+import { DarkTheme, DefaultTheme, NavigationContainer, Theme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useAppSelector } from '@/reduxToolkit/hooks';
 import { useAppTheme } from '@/theme';
@@ -13,10 +13,11 @@ const Navigator = () => {
   const { theme } = useAppTheme();
   const isAuthenticated = useAppSelector(state => !!state.app.token);
 
+  const base = theme.isDark ? DarkTheme : DefaultTheme;
   const navTheme: Theme = {
-    ...DefaultTheme,
+    ...base,
     colors: {
-      ...DefaultTheme.colors,
+      ...base.colors,
       primary: theme.colors.tint,
       background: theme.colors.background,
       card: theme.colors.background,

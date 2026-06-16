@@ -6,7 +6,7 @@ import { createStyles } from './styles';
 const Home = () => {
   const { theme } = useAppTheme();
   const styles = useStyles(createStyles);
-  const {user} = useAppSelector(state => state.app);
+  const { user } = useAppSelector(state => state.app);
 
   return (
     <Screen>

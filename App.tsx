@@ -13,6 +13,7 @@ import Splash from '@/screens/Splash';
 const Root = () => {
   const [ready, setReady] = useState(false);
   const language = useAppSelector(state => state.app.language);
+  const themeMode = useAppSelector(state => state.app.theme);
 
   useEffect(() => {
     initI18n().then(() => setReady(true));
@@ -30,7 +31,7 @@ const Root = () => {
 
   return (
     <>
-      <StatusBar barStyle="dark-content" />
+      <StatusBar barStyle={themeMode === 'dark' ? 'light-content' : 'dark-content'} />
       <Navigator />
     </>
   );

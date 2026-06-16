@@ -30,6 +30,9 @@ const es: Translations = {
   },
   settingsScreen: {
     title: 'Ajustes',
+    theme: 'Tema',
+    light: 'Claro',
+    dark: 'Oscuro',
     language: 'Idioma',
   },
   errors: {
