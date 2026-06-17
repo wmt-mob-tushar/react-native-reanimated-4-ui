@@ -1,6 +1,6 @@
 import { Pressable, View } from 'react-native';
 import { Screen, Text } from '@/component';
-import { languages } from '@/i18n';
+import { changeLanguage, languages } from '@/i18n';
 import { useAppDispatch, useAppSelector } from '@/reduxToolkit/hooks';
 import { setLanguage } from '@/reduxToolkit/rootSlice';
 import { colors } from '@/theme';
@@ -22,10 +22,13 @@ const Settings = () => {
             <Pressable
               key={item.code}
               style={[styles.row, active ? styles.rowActive : styles.rowInactive]}
-              onPress={() => dispatch(setLanguage(item.code))}>
+              onPress={() => {
+                changeLanguage(item.code);
+                dispatch(setLanguage(item.code));
+              }}>
               <Text
                 text={item.label}
-                color={active ? colors.palette.neutral100 : colors.text}
+                color={active ? colors.neutral100 : colors.text}
               />
             </Pressable>
           );

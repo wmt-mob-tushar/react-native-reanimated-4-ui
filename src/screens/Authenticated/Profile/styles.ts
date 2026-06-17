@@ -1,11 +1,11 @@
-import { StyleSheet } from 'react-native';
-import { spacing } from '@/theme';
+import { StyleSheet } from 'react-native-unistyles';
 
-export const styles = StyleSheet.create({
+export const styles = StyleSheet.create(theme => ({
   email: {
-    marginTop: spacing.xs,
+    marginTop: theme.spacing.xs,
   },
   footer: {
-    marginTop: spacing.xl,
+    marginTop: theme.spacing.xl,
+    gap: theme.spacing.sm,
   },
-});
+}));

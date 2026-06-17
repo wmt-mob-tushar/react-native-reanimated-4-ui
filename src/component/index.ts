@@ -4,3 +4,5 @@ export * from './ui/Screen';
 export * from './ui/AnimatedPressable';
 export * from './ui/CircularProgress';
 export * from './ui/StepIndicator';
+export * from './view/BarChart';
+export * from './view/StreakCard';

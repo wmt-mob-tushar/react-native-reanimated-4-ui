@@ -8,7 +8,7 @@ import {
   ViewStyle,
 } from 'react-native';
 import { TxKeyPath } from '@/i18n';
-import { translate } from '@/i18n/translate';
+import { useTranslate } from '@/i18n/translate';
 import { colors } from '@/theme';
 import { ButtonVariant, styles } from './styles';
 
@@ -23,10 +23,11 @@ export interface ButtonProps extends PressableProps {
 
 export const Button = (props: ButtonProps) => {
   const { tx, text, variant = 'primary', loading, disabled, style, textStyle, ...rest } = props;
+  const translate = useTranslate();
   const label = tx ? translate(tx) : text;
 
   const isOutline = variant === 'outline';
-  const spinnerColor = isOutline ? colors.tint : colors.palette.neutral100;
+  const spinnerColor = isOutline ? colors.tint : colors.neutral100;
 
   return (
     <Pressable

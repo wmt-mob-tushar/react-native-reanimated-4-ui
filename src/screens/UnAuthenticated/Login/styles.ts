@@ -1,27 +1,26 @@
-import { StyleSheet } from 'react-native';
-import { colors, spacing } from '@/theme';
+import { StyleSheet } from 'react-native-unistyles';
 
-export const styles = StyleSheet.create({
+export const styles = StyleSheet.create(theme => ({
   subtitle: {
-    marginTop: spacing.xs,
+    marginTop: theme.spacing.xs,
   },
   label: {
-    marginTop: spacing.md,
+    marginTop: theme.spacing.md,
   },
   input: {
     minHeight: 52,
     borderWidth: 1,
-    borderColor: colors.border,
-    borderRadius: spacing.xs,
-    paddingHorizontal: spacing.md,
-    marginTop: spacing.sm,
-    backgroundColor: colors.palette.neutral100,
-    color: colors.text,
+    borderColor: theme.colors.border,
+    borderRadius: theme.spacing.xs,
+    paddingHorizontal: theme.spacing.md,
+    marginTop: theme.spacing.sm,
+    backgroundColor: theme.colors.neutral100,
+    color: theme.colors.text,
   },
   error: {
-    marginTop: spacing.sm,
+    marginTop: theme.spacing.sm,
   },
   footer: {
-    marginTop: spacing.xl,
+    marginTop: theme.spacing.xl,
   },
-});
+}));

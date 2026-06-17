@@ -1,167 +1,125 @@
-import React, { useEffect } from 'react';
+import { memo, useEffect } from 'react';
 import { View } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
 import Svg, { Circle, Rect, Defs, LinearGradient, Stop } from 'react-native-svg';
-import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
-  useAnimatedProps,
-  withTiming,
-  withSpring,
-  withDelay,
-} from 'react-native-reanimated';
-import { colors } from '@/theme';
+import Animated, { useSharedValue, useAnimatedProps, withTiming } from 'react-native-reanimated';
+import { colors, assets } from '@/theme';
 import { Text } from '../Text';
 import { styles } from './styles';
 
+const STEP = 64;
+const ARC_W = 8;
+const LINE_W = 8;
+const RING_R = (STEP - ARC_W) / 2;
+const RING_C = RING_R * 2 * Math.PI;
+
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 
+const clamp = (v: number, min: number, max: number) => Math.max(min, Math.min(max, v));
+
+export type StepStatus = 'completed' | 'active' | 'locked';
+
 export interface StepIndicatorProps {
-  status: 'completed' | 'active' | 'locked' | 'faded';
+  /** Zero-based position of this step (also the number shown). */
   index: number;
-  isFirst?: boolean;
-  isLast?: boolean;
+  /** Total number of steps in the timeline. */
+  total: number;
+  /** Timeline progress — e.g. `2.3` fills step index 2 to 30%, `2.8` to 80%. */
+  value: number;
 }
 
-const TimelineLine = ({ color }: { color: string | 'gradient' }) => {
-  if (color === 'gradient') {
-    return (
-      <View style={styles.gradientLineContainer}>
-        <Svg width={4} height="100%">
-          <Defs>
-            <LinearGradient id="lineGrad" x1="0" y1="0" x2="0" y2="1">
-              <Stop offset="0%" stopColor={colors.palette.progressGreen} />
-              <Stop offset="100%" stopColor={colors.palette.timelineGray} />
-            </LinearGradient>
-          </Defs>
-          <Rect x={0} y={0} width={4} height="100%" fill="url(#lineGrad)" />
-        </Svg>
-      </View>
-    );
-  }
+export const StepIndicator = memo(({ index, total, value }: StepIndicatorProps) => {
+  const isFirst = index === 0;
+  const isLast = index === total - 1;
 
-  return <View style={[styles.verticalLine, { backgroundColor: color }]} />;
-};
+  const fill = clamp(value - index, 0, 1);
+  const status: StepStatus = fill >= 1 ? 'completed' : fill > 0 ? 'active' : 'locked';
 
-export const StepIndicator = ({ status, index, isFirst = false, isLast = false }: StepIndicatorProps) => {
-  const scale = useSharedValue(0);
+  const topReached = value >= index;
+  const bottomComplete = value >= index + 1;
+  const bottomActive = !bottomComplete && value > index;
 
+  // Animate the green arc whenever the fill changes (and on mount, from 0).
+  const animFill = useSharedValue(0);
   useEffect(() => {
-    scale.value = withDelay(index * 200, withSpring(1));
-  }, [index, scale]);
-
-  const animatedStyle = useAnimatedStyle(() => ({
-    transform: [{ scale: scale.value }],
+    animFill.value = withTiming(fill, { duration: 500 });
+  }, [fill, animFill]);
+  const greenProps = useAnimatedProps(() => ({
+    strokeDashoffset: RING_C - animFill.value * RING_C,
   }));
 
-  // Unconditional hooks for active state
-  const size = 38;
-  const strokeWidth = 3;
-  const radius = (size - strokeWidth) / 2;
-  const circumference = radius * 2 * Math.PI;
-  const progressShared = useSharedValue(0);
+  return (
+    <View style={styles.col}>
+      {!isFirst && (
+        <View
+          style={[
+            styles.lineTop,
+            { backgroundColor: topReached ? colors.progressGreen : colors.timelineGray },
+          ]}
+        />
+      )}
 
-  useEffect(() => {
-    if (status === 'active') {
-      progressShared.value = withDelay(index * 250, withTiming(75, { duration: 1000 }));
-    }
-  }, [index, status, progressShared]);
-
-  const animatedProps = useAnimatedProps(() => {
-    const strokeDashoffset = circumference - (progressShared.value / 100) * circumference;
-    return {
-      strokeDashoffset,
-    };
-  });
-
-  const renderNode = () => {
-    if (status === 'completed') {
-      return (
-        <Animated.View style={[styles.indicatorContainer, animatedStyle]}>
-          <View style={styles.completedCircle}>
-            <Icon name="checkmark" size={18} color={colors.palette.neutral100} />
-          </View>
-        </Animated.View>
-      );
-    }
-
-    if (status === 'active') {
-      return (
-        <Animated.View style={[styles.indicatorContainer, animatedStyle]}>
-          <View style={styles.activeCircleWrapper}>
-            <Svg width={size} height={size} style={styles.activeCircleSvg}>
-              <Circle
-                cx={size / 2}
-                cy={size / 2}
-                r={radius}
-                stroke={colors.palette.timelineGray}
-                strokeWidth={strokeWidth}
-                fill="none"
-              />
-              <AnimatedCircle
-                cx={size / 2}
-                cy={size / 2}
-                r={radius}
-                stroke={colors.palette.progressGreen}
-                strokeWidth={strokeWidth}
-                strokeDasharray={circumference}
-                animatedProps={animatedProps}
-                strokeLinecap="round"
-                fill="none"
-                transform={`rotate(-90 ${size / 2} ${size / 2})`}
-              />
+      {!isLast &&
+        (bottomComplete ? (
+          <View style={[styles.lineBottom, { backgroundColor: colors.progressGreen }]} />
+        ) : bottomActive ? (
+          <View style={styles.lineBottom}>
+            <Svg width={LINE_W} height="100%">
+              <Defs>
+                <LinearGradient id={`stepGrad${index}`} x1="0" y1="0" x2="0" y2="1">
+                  <Stop offset={0} stopColor={colors.progressGreen} />
+                  <Stop offset={1} stopColor={colors.timelineGray} />
+                </LinearGradient>
+              </Defs>
+              <Rect width={LINE_W} height="100%" fill={`url(#stepGrad${index})`} />
             </Svg>
-            <View style={styles.activeCircleInner}>
-              <Text text="2" style={styles.indicatorNumberText} />
+          </View>
+        ) : (
+          <View style={[styles.lineBottom, { backgroundColor: colors.timelineGray }]} />
+        ))}
+
+      {status === 'completed' && (
+        <View style={styles.completedRing}>
+          <View style={styles.completedGap}>
+            <View style={styles.completedCore}>
+              <assets.RightIcon width={22} height={18} />
             </View>
           </View>
-        </Animated.View>
-      );
-    }
-
-    const isFaded = status === 'faded';
-    return (
-      <Animated.View style={[styles.indicatorContainer, animatedStyle]}>
-        <View style={[styles.lockedCircle, isFaded && styles.fadedIndicator]}>
-          <Text text={`${index + 1}`} style={[styles.indicatorNumberText, styles.lockedIndicatorText]} />
         </View>
-      </Animated.View>
-    );
-  };
+      )}
 
-  // Determine line color states based on actual index conditions
-  let topColor: string | 'gradient' | null = null;
-  let bottomColor: string | 'gradient' | null = null;
+      {status === 'active' && (
+        <View style={styles.activeOuter}>
+          <Svg width={STEP} height={STEP} style={styles.activeRingSvg}>
+            {/* Gray track + green fill share one ring (no gap, no overlap). */}
+            <Circle cx={STEP / 2} cy={STEP / 2} r={RING_R} stroke={colors.timelineGray} strokeWidth={ARC_W} fill="none" />
+            <AnimatedCircle
+              cx={STEP / 2}
+              cy={STEP / 2}
+              r={RING_R}
+              stroke={colors.progressGreen}
+              strokeWidth={ARC_W}
+              strokeDasharray={RING_C}
+              animatedProps={greenProps}
+              strokeLinecap="round"
+              fill="none"
+              transform={`rotate(-90 ${STEP / 2} ${STEP / 2})`}
+            />
+          </Svg>
+          <View style={styles.activeInner}>
+            <Text text={`${index + 1}`} style={styles.number} />
+          </View>
+        </View>
+      )}
 
-  if (!isFirst) {
-    if (index === 1) {
-      topColor = colors.palette.progressGreen;
-    } else if (index === 2) {
-      topColor = 'gradient';
-    } else {
-      topColor = colors.palette.timelineGray;
-    }
-  }
-
-  if (!isLast) {
-    if (index === 0) {
-      bottomColor = colors.palette.progressGreen;
-    } else if (index === 1) {
-      bottomColor = 'gradient';
-    } else {
-      bottomColor = colors.palette.timelineGray;
-    }
-  }
-
-  return (
-    <View style={styles.container}>
-      <View style={styles.connectorContainer}>
-        {topColor && <TimelineLine color={topColor} />}
-      </View>
-      {renderNode()}
-      <View style={styles.connectorContainer}>
-        {bottomColor && <TimelineLine color={bottomColor} />}
-      </View>
+      {status === 'locked' && (
+        <View style={styles.lockedCircle}>
+          <View style={styles.lockedInner}>
+            <Text text={`${index + 1}`} style={[styles.number, styles.numberLocked]} />
+          </View>
+        </View>
+      )}
     </View>
   );
-};
+});
+
+StepIndicator.displayName = 'StepIndicator';

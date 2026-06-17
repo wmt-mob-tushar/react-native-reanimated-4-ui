@@ -1,4 +1,5 @@
 import { View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { Button, Screen, Text } from '@/component';
 import { useAppDispatch, useAppSelector } from '@/reduxToolkit/hooks';
 import { logout } from '@/reduxToolkit/rootSlice';
@@ -6,6 +7,7 @@ import { colors } from '@/theme';
 import { styles } from './styles';
 
 const Profile = () => {
+  const navigation = useNavigation();
   const dispatch = useAppDispatch();
   const { user } = useAppSelector(state => state.app);
 
@@ -19,6 +21,7 @@ const Profile = () => {
         style={styles.email}
       />
       <View style={styles.footer}>
+        <Button tx="settingsScreen:title" variant="outline" onPress={() => navigation.navigate('Settings')} />
         <Button tx="common:logOut" variant="outline" onPress={() => dispatch(logout())} />
       </View>
     </Screen>

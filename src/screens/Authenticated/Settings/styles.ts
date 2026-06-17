@@ -1,29 +1,28 @@
-import { StyleSheet } from 'react-native';
-import { colors, spacing } from '@/theme';
+import { StyleSheet } from 'react-native-unistyles';
 
-export const styles = StyleSheet.create({
+export const styles = StyleSheet.create(theme => ({
   sectionLabel: {
-    marginTop: spacing.lg,
+    marginTop: theme.spacing.lg,
   },
   list: {
-    marginTop: spacing.sm,
+    marginTop: theme.spacing.sm,
   },
   row: {
     minHeight: 52,
-    paddingHorizontal: spacing.md,
-    borderRadius: spacing.xs,
-    marginTop: spacing.xs,
+    paddingHorizontal: theme.spacing.md,
+    borderRadius: theme.spacing.xs,
+    marginTop: theme.spacing.xs,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     borderWidth: 1,
   },
   rowActive: {
-    backgroundColor: colors.tint,
-    borderColor: colors.tint,
+    backgroundColor: theme.colors.tint,
+    borderColor: theme.colors.tint,
   },
   rowInactive: {
-    backgroundColor: colors.palette.neutral100,
-    borderColor: colors.border,
+    backgroundColor: theme.colors.neutral100,
+    borderColor: theme.colors.border,
   },
-});
+}));

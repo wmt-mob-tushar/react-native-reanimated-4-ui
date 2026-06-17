@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { TextInput, View } from 'react-native';
 import { Button, Screen, Text } from '@/component';
-import { translate } from '@/i18n/translate';
+import { useTranslate } from '@/i18n/translate';
 import { useAppDispatch } from '@/reduxToolkit/hooks';
 import { setToken, setUser } from '@/reduxToolkit/rootSlice';
 import { colors } from '@/theme';
@@ -10,6 +10,7 @@ import { styles } from './styles';
 
 const Login = () => {
   const dispatch = useAppDispatch();
+  const translate = useTranslate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');

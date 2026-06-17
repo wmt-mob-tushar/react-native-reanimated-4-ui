@@ -1,85 +1,101 @@
-import { StyleSheet } from 'react-native';
-import { colors, typography } from '@/theme';
+import { StyleSheet } from 'react-native-unistyles';
 
-export const styles = StyleSheet.create({
-  container: {
-    width: 50,
-    alignItems: 'center',
-    flex: 1,
-  },
-  connectorContainer: {
-    flex: 1,
-    width: 4,
-    alignItems: 'center',
-  },
-  verticalLine: {
-    width: 3.5,
-    flex: 1,
-  },
-  gradientLineContainer: {
-    width: 3.5,
-    flex: 1,
-  },
-  indicatorContainer: {
-    height: 38,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  completedCircle: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    backgroundColor: colors.palette.progressGreen,
-    alignItems: 'center',
-    justifyContent: 'center',
-    shadowColor: colors.palette.progressGreen,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 2,
-  },
-  activeCircleWrapper: {
-    width: 38,
-    height: 38,
+const COL = 64;
+const LINE_W = 8;
+
+export const styles = StyleSheet.create(theme => ({
+  col: {
+    width: COL,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  activeCircleSvg: {
+  // Square ends + a few px of overlap past each row edge so consecutive
+  // segments merge into one continuous line (no pinch/"cut").
+  lineTop: {
+    position: 'absolute',
+    top: -3,
+    bottom: '50%',
+    left: (COL - LINE_W) / 2,
+    width: LINE_W,
+  },
+  lineBottom: {
+    position: 'absolute',
+    top: '50%',
+    bottom: -3,
+    left: (COL - LINE_W) / 2,
+    width: LINE_W,
+  },
+  // Completed — green donut + check (8px ring).
+  completedRing: {
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    backgroundColor: theme.colors.progressGreen,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  completedGap: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    backgroundColor: theme.colors.white,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  completedCore: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: theme.colors.progressGreen,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  // Active — segmented arcs over an opaque white base + pale-blue inner.
+  activeOuter: {
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    backgroundColor: theme.colors.white,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  activeRingSvg: {
     position: 'absolute',
   },
-  activeCircleInner: {
-    position: 'absolute',
-    width: 28,
-    height: 28,
-    borderRadius: 14,
-    backgroundColor: colors.palette.neutral100,
+  activeInner: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: theme.colors.lightBlue,
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.05,
-    shadowRadius: 2,
-    elevation: 1,
   },
-  indicatorNumberText: {
-    fontFamily: typography.primary.bold,
-    fontSize: 14,
-    color: colors.palette.primary,
-  },
+  // Locked — thick outer ring + thin inner ring around the number.
   lockedCircle: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    backgroundColor: colors.palette.neutral100,
-    borderWidth: 1.5,
-    borderColor: colors.palette.timelineGray,
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    backgroundColor: theme.colors.white,
+    borderWidth: 8,
+    borderColor: theme.colors.timelineGray,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  lockedIndicatorText: {
+  lockedInner: {
+    width: 42,
+    height: 42,
+    borderRadius: 21,
+    borderWidth: 1.5,
+    borderColor: theme.colors.timelineGray,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  number: {
+    fontFamily: theme.typography.primary.bold,
+    fontSize: 18,
+    color: theme.colors.primary,
+  },
+  numberLocked: {
     color: 'rgba(28, 39, 76, 0.4)',
   },
-  fadedIndicator: {
-    opacity: 0.6,
-  },
-});
+}));

@@ -1,36 +1,35 @@
-import { StyleSheet } from 'react-native';
-import { colors, spacing, typography } from '@/theme';
+import { StyleSheet } from 'react-native-unistyles';
 
 export type ButtonVariant = 'primary' | 'secondary' | 'outline';
 
-export const styles = StyleSheet.create({
+export const styles = StyleSheet.create(theme => ({
   base: {
     minHeight: 52,
-    borderRadius: spacing.xs,
-    paddingHorizontal: spacing.md,
+    borderRadius: theme.spacing.xs,
+    paddingHorizontal: theme.spacing.md,
     alignItems: 'center',
     justifyContent: 'center',
   },
   primary: {
-    backgroundColor: colors.tint,
+    backgroundColor: theme.colors.tint,
   },
   secondary: {
-    backgroundColor: colors.palette.secondary500,
+    backgroundColor: theme.colors.secondary500,
   },
   outline: {
-    backgroundColor: colors.transparent,
+    backgroundColor: theme.colors.transparent,
     borderWidth: 1,
-    borderColor: colors.tint,
+    borderColor: theme.colors.tint,
   },
   disabled: {
     opacity: 0.6,
   },
   label: {
-    fontFamily: typography.primary.medium,
+    fontFamily: theme.typography.primary.medium,
     fontSize: 16,
-    color: colors.palette.neutral100,
+    color: theme.colors.neutral100,
   },
   labelOutline: {
-    color: colors.tint,
+    color: theme.colors.tint,
   },
-});
+}));

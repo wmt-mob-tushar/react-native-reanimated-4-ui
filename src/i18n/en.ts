@@ -16,15 +16,40 @@ const en = {
   },
   tabs: {
     home: 'Home',
+    learn: 'Learn',
+    stats: 'Stats',
     profile: 'Profile',
     settings: 'Settings',
   },
   homeScreen: {
     title: 'Home',
     welcome: 'Welcome back!',
+    viewDetails: 'View Lessons',
+  },
+  detailsScreen: {
+    label: "Today's Lesson",
+    title: 'A for Apple',
+    description:
+      'Dive into the sound of "A" with playful objects, fun animations and friendly voices. Tap start to begin learning the alphabet the joyful way.',
+    durationLabel: 'Duration',
+    durationValue: '2 min',
+    lessonsLabel: 'Lessons',
+    lessonsValue: '5 steps',
+    levelLabel: 'Level',
+    levelValue: 'Beginner',
+    start: 'Start Lesson',
   },
   profileScreen: {
     title: 'Profile',
+  },
+  statsScreen: {
+    analytics: 'Analytics',
+    title: 'Skill progress',
+    subtitle: 'Avg improvement this week',
+  },
+  streakCard: {
+    title: 'Your streak',
+    tip: 'You learn best with quick 5-min lessons.',
   },
   settingsScreen: {
     title: 'Settings',

@@ -1,11 +1,10 @@
-import { StyleSheet } from 'react-native';
-import { colors } from '@/theme';
+import { StyleSheet } from 'react-native-unistyles';
 
-export const styles = StyleSheet.create({
+export const styles = StyleSheet.create(theme => ({
   container: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: colors.background,
+    backgroundColor: theme.colors.background,
   },
-});
+}));

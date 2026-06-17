@@ -1,27 +1,27 @@
-import { StyleSheet, TextStyle } from 'react-native';
-import { TextPreset, TextWeight, colors, typography } from '@/theme';
+import { StyleSheet } from 'react-native-unistyles';
+import { TextWeight, typography } from '@/theme';
 
-export const styles = StyleSheet.create<Record<TextPreset, TextStyle>>({
+export const styles = StyleSheet.create(theme => ({
   default: {
-    fontFamily: typography.primary.normal,
+    fontFamily: theme.typography.primary.normal,
     fontSize: 16,
-    color: colors.text,
+    color: theme.colors.text,
   },
   heading: {
-    fontFamily: typography.primary.bold,
+    fontFamily: theme.typography.primary.bold,
     fontSize: 24,
-    color: colors.text,
+    color: theme.colors.text,
   },
   subheading: {
-    fontFamily: typography.primary.medium,
+    fontFamily: theme.typography.primary.medium,
     fontSize: 18,
-    color: colors.text,
+    color: theme.colors.text,
   },
   label: {
-    fontFamily: typography.primary.medium,
+    fontFamily: theme.typography.primary.medium,
     fontSize: 14,
-    color: colors.text,
+    color: theme.colors.text,
   },
-});
+}));
 
 export const weightFamily = (weight: TextWeight) => typography.primary[weight];

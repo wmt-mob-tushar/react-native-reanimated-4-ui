@@ -1,8 +1,9 @@
-const palette = {
+export const colors = {
   primary: '#1C274C',
   primaryAlt: '#2F3656',
-
+  secondary500: '#2F3656',
   white: '#FFFFFF',
+  neutral100: '#FFFFFF',
   black: '#000000',
 
   primary80: '#1C274CCC',
@@ -14,6 +15,7 @@ const palette = {
   primary05: '#1C274C0D',
 
   blue: '#E3E1F6',
+  lightBlue: '#E3E1F6',
   sky: '#CADDF7',
   lavender: '#E5CDFF',
   pink: '#FFE9E9',
@@ -21,39 +23,30 @@ const palette = {
   lime: '#E9FF72',
   green: '#DFF28A',
   mint: '#DCEA8F',
+  cream: '#F4EFD7',
 
   amber: '#FDCB50',
   orange: '#FD8F01',
   red: '#D80027',
   greenStrong: '#5AA02B',
   blueStrong: '#3D88B3',
+  progressGreen: '#81A738',
+  timelineGray: '#E8EBF2',
 
   surface: '#F5F5F5',
   surfaceAlt: '#F4F3F3',
 
-  neutral100: '#FFFFFF',
-  secondary500: '#2F3656',
-
-  cream: '#F4EFD7',
-  lightBlue: '#E4F0FC',
-  progressGreen: '#7CA62B',
-  timelineGray: '#E4E4E4',
-} as const;
-
-export const colors = {
-  palette,
   transparent: '#00000000',
-  text: palette.primary,
-  textDim: palette.primary60,
-  textMuted: palette.primary40,
-  background: palette.white,
-  backgroundAlt: palette.surface,
-  border: palette.primary12,
-  tint: palette.primary,
-  tintInactive: palette.primary40,
-  separator: palette.primary08,
-  error: palette.red,
+  text: '#1C274C',
+  textDim: '#1C274C99',
+  textMuted: '#1C274C66',
+  background: '#FFFFFF',
+  backgroundAlt: '#F5F5F5',
+  border: '#1C274C1F',
+  tint: '#1C274C',
+  tintInactive: '#1C274C66',
+  separator: '#1C274C14',
+  error: '#D80027',
   errorBackground: '#D800271F',
-
-  success: palette.greenStrong,
+  success: '#5AA02B',
 } as const;

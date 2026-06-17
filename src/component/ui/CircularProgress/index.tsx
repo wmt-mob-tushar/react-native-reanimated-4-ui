@@ -1,10 +1,7 @@
-import React, { useEffect } from 'react';
-import { View, StyleSheet, StyleProp, ViewStyle, TextStyle } from 'react-native';
+import { View, StyleProp, ViewStyle, TextStyle } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 import Svg, { Circle } from 'react-native-svg';
-import Animated, { useAnimatedProps, useSharedValue, withTiming } from 'react-native-reanimated';
 import { Text } from '../Text';
-
-const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 
 export interface CircularProgressProps {
   size: number;
@@ -29,18 +26,7 @@ export const CircularProgress = ({
 }: CircularProgressProps) => {
   const radius = (size - strokeWidth) / 2;
   const circumference = radius * 2 * Math.PI;
-  const progressShared = useSharedValue(0);
-
-  useEffect(() => {
-    progressShared.value = withTiming(progress, { duration: 1500 });
-  }, [progress, progressShared]);
-
-  const animatedProps = useAnimatedProps(() => {
-    const strokeDashoffset = circumference - (progressShared.value / 100) * circumference;
-    return {
-      strokeDashoffset,
-    };
-  });
+  const strokeDashoffset = circumference - (progress / 100) * circumference;
 
   return (
     <View style={[styles.container, { width: size, height: size }, style]}>
@@ -53,17 +39,20 @@ export const CircularProgress = ({
           strokeWidth={strokeWidth}
           fill="none"
         />
-        <AnimatedCircle
+        <Circle
           cx={size / 2}
           cy={size / 2}
           r={radius}
           stroke={color}
           strokeWidth={strokeWidth}
           strokeDasharray={circumference}
-          animatedProps={animatedProps}
+          strokeDashoffset={strokeDashoffset}
           strokeLinecap="round"
           fill="none"
-          transform={`rotate(-90 ${size / 2} ${size / 2})`}
+          originX={size / 2}
+          originY={size / 2}
+          rotation={-90}
+          scaleX={-1}
         />
       </Svg>
       {showText && (
@@ -89,7 +78,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   text: {
-    fontSize: 10,
+    fontSize: 12,
     fontWeight: 'bold',
   },
 });
