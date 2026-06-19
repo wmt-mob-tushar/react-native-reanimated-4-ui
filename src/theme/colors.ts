@@ -7,8 +7,11 @@ export const colors = {
   black: '#000000',
 
   primary80: '#1C274CCC',
+  primary70: '#1C274CB3',
   primary60: '#1C274C99',
+  primary50: '#1C274C80',
   primary40: '#1C274C66',
+  primary35: '#1C274C59',
   primary24: '#1C274C3D',
   primary12: '#1C274C1F',
   primary08: '#1C274C14',

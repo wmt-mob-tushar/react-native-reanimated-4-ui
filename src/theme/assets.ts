@@ -10,6 +10,7 @@ import HomeFillIcon from '@assets/icons/home-fill.svg';
 import RightIcon from '@assets/icons/right.svg';
 import WatchIcon from '@assets/icons/watch.svg';
 
+import BookLogo from '@assets/images/book.svg';
 import BackgroundVector from '@assets/images/background_vector.svg';
 import HomeIllustrate from '@assets/images/home_illustrate.svg';
 import HomeIllustrate2 from '@assets/images/home_illustrate_2.svg';
@@ -19,6 +20,7 @@ import RobotSvg from '@assets/images/robot.svg';
 import FireIcon from '@assets/images/fire.svg';
 import StarSvg from '@assets/images/star.svg';
 import Avatar from '@assets/images/avatar.png';
+import Bulb from '@assets/images/bulb.png';
 
 export const assets = {
   AiIcon,
@@ -32,7 +34,7 @@ export const assets = {
   HomeFillIcon,
   RightIcon,
   WatchIcon,
-
+  BookLogo,
   BackgroundVector,
   HomeIllustrate,
   HomeIllustrate2,
@@ -41,6 +43,6 @@ export const assets = {
   RobotSvg,
   FireIcon,
   StarSvg,
-
+  Bulb,
   Avatar,
 } as const;

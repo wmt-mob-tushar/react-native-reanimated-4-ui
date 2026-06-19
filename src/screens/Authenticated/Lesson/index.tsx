@@ -1,15 +1,8 @@
 import { useCallback, useMemo } from 'react';
-import { View, Pressable, StatusBar, StyleSheet } from 'react-native';
+import { FlatList, View, Pressable, StatusBar, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/Ionicons';
-import Animated, {
-  useSharedValue,
-  useAnimatedScrollHandler,
-  useAnimatedStyle,
-  interpolate,
-  Extrapolation,
-} from 'react-native-reanimated';
 import { BlurView } from '@sbaiahmed1/react-native-blur';
 import { Text, CircularProgress, StepIndicator } from '@/component';
 import { TxKeyPath } from '@/i18n';
@@ -27,16 +20,6 @@ const Lesson = () => {
   const navigation = useNavigation();
   const insets = useSafeAreaInsets();
   const onBack = useCallback(() => navigation.goBack(), [navigation]);
-
-  const scrollY = useSharedValue(0);
-  const onScroll = useAnimatedScrollHandler(e => {
-    scrollY.value = e.contentOffset.y;
-  });
-
-  // Illustration fades out as the header scrolls away.
-  const illustrationStyle = useAnimatedStyle(() => ({
-    opacity: interpolate(scrollY.value, [0, 110], [1, 0], Extrapolation.CLAMP),
-  }));
 
   const renderItem = useCallback(({ item, index }: { item: LessonItem; index: number }) => {
     const fill = Math.max(0, Math.min(1, PROGRESS - index));
@@ -80,11 +63,11 @@ const Lesson = () => {
   const ListHeader = useMemo(
     () => (
       <View style={[styles.header, { paddingTop: insets.top + 14 }]}>
-        <assets.BackgroundVector width={446.55} height={262.96} style={styles.bgArc} pointerEvents="none" />
+        <assets.BackgroundVector width={446.55} height={262.96} color="#FFFFFF33" style={styles.bgArc} pointerEvents="none" />
 
-        <Animated.View style={[styles.illustration, illustrationStyle]} pointerEvents="none">
+        <View style={styles.illustration} pointerEvents="none">
           <assets.LearnPageIllustrate width={280.75} height={292} />
-        </Animated.View>
+        </View>
 
         <Pressable style={styles.backBtn} hitSlop={8} onPress={onBack}>
           <Icon name="arrow-back" size={24} color={colors.primary} />
@@ -128,22 +111,20 @@ const Lesson = () => {
         </View>
       </View>
     ),
-    [insets.top, illustrationStyle, onBack],
+    [insets.top, onBack],
   );
 
   return (
     <View style={styles.root}>
       <StatusBar barStyle="dark-content" backgroundColor={colors.mint} translucent />
 
-      <Animated.FlatList
+      <FlatList
         data={lessonsData}
         keyExtractor={item => item.id}
         renderItem={renderItem}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.listContent}
         ListHeaderComponent={ListHeader}
-        onScroll={onScroll}
-        scrollEventThrottle={16}
         initialNumToRender={10}
         maxToRenderPerBatch={10}
         windowSize={5}

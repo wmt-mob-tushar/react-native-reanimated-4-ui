@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { View, Pressable, LayoutChangeEvent } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Text } from '@/component/ui/Text';
-import { assets } from '@/theme';
+import { assets, colors } from '@/theme';
 import { styles } from './styles';
 
 const DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
@@ -58,7 +58,7 @@ export const StreakCard = ({ streak = 3822, total = 5000, current }: StreakCardP
           <assets.RobotSvg width={26} height={26} />
           <Text tx="streakCard:tip" style={styles.tipText} />
           <Pressable hitSlop={8} onPress={() => setShowTip(false)}>
-            <Icon name="close" size={16} color="rgba(28, 39, 76, 0.5)" />
+            <Icon name="close" size={16} color={colors.primary50} />
           </Pressable>
         </View>
       )}

@@ -160,7 +160,6 @@ export const styles = StyleSheet.create((theme, rt) => ({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: theme.colors.white,
-    opacity: 0.1,
     paddingHorizontal: 12,
     paddingVertical: 7,
     borderRadius: 16,

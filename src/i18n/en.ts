@@ -5,15 +5,6 @@ const en = {
     back: 'Back',
     logOut: 'Log Out',
   },
-  loginScreen: {
-    title: 'Sign In',
-    subtitle: 'Enter your details below to continue.',
-    emailFieldLabel: 'Email',
-    passwordFieldLabel: 'Password',
-    emailFieldPlaceholder: 'Enter your email address',
-    passwordFieldPlaceholder: 'Enter your password',
-    tapToLogIn: 'Tap to log in',
-  },
   tabs: {
     home: 'Home',
     learn: 'Learn',
@@ -25,6 +16,12 @@ const en = {
     title: 'Home',
     welcome: 'Welcome back!',
     viewDetails: 'View Lessons',
+    hello: 'Hello',
+    greeting: 'Good Morning',
+  },
+  learnSection: {
+    title: "Let's learn",
+    startLearning: 'Start learning',
   },
   detailsScreen: {
     label: "Today's Lesson",
@@ -50,6 +47,10 @@ const en = {
   streakCard: {
     title: 'Your streak',
     tip: 'You learn best with quick 5-min lessons.',
+  },
+  homeCard: {
+    todaysPick: "Today's pick: Shapes",
+    complete: 'complete',
   },
   settingsScreen: {
     title: 'Settings',

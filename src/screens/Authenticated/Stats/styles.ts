@@ -28,7 +28,7 @@ export const styles = StyleSheet.create(theme => ({
   },
   card: {
     backgroundColor: '#E5F2F9',
-    borderRadius: 28,
+    borderRadius: 32,
     padding: 20,
     marginTop: 16,
   },
@@ -50,13 +50,17 @@ export const styles = StyleSheet.create(theme => ({
     fontSize: 12,
     lineHeight: 16,
     letterSpacing: -0.132,
-    color: 'rgba(28, 39, 76, 0.5)',
+    color: theme.colors.primary50,
     marginTop: 8,
   },
 
   dropdown: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
     minWidth: 116,
-    height: 36,
+    paddingVertical: 10,
     paddingHorizontal: 14,
     borderRadius: 18,
     backgroundColor: theme.colors.white,
@@ -66,11 +70,6 @@ export const styles = StyleSheet.create(theme => ({
     fontSize: 12,
     letterSpacing: -0.132,
     color: theme.colors.primary,
-  },
-  dropdownList: {
-    marginTop: 4,
-    borderRadius: 16,
-    borderWidth: 0,
   },
   chipsRow: {
     gap: 10,
@@ -91,7 +90,7 @@ export const styles = StyleSheet.create(theme => ({
   chipInactive: {
     backgroundColor: 'transparent',
     borderWidth: 1.5,
-    borderColor: 'rgba(28, 39, 76, 0.12)',
+    borderColor: theme.colors.primary12,
   },
   chipText: {
     fontFamily: theme.typography.primary.medium,

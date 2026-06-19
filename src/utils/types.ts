@@ -1,5 +1,7 @@
 export type LanguageCode = 'en' | 'es';
 
+export type ButtonVariant = 'fill' | 'outline';
+
 export interface UserData {
   id: string;
   name: string;

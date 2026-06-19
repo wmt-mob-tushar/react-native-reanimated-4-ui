@@ -1,125 +1,100 @@
-import { memo, useEffect } from 'react';
-import { View } from 'react-native';
-import Svg, { Circle, Rect, Defs, LinearGradient, Stop } from 'react-native-svg';
-import Animated, { useSharedValue, useAnimatedProps, withTiming } from 'react-native-reanimated';
-import { colors, assets } from '@/theme';
+import { useState } from 'react';
+import { LayoutChangeEvent, View } from 'react-native';
+import { Canvas, Circle, LinearGradient, Path, Rect, Skia, rect, vec } from '@shopify/react-native-skia';
+import { assets, colors } from '@/theme';
 import { Text } from '../Text';
 import { styles } from './styles';
 
 const STEP = 64;
-const ARC_W = 8;
-const LINE_W = 8;
-const RING_R = (STEP - ARC_W) / 2;
-const RING_C = RING_R * 2 * Math.PI;
-
-const AnimatedCircle = Animated.createAnimatedComponent(Circle);
-
-const clamp = (v: number, min: number, max: number) => Math.max(min, Math.min(max, v));
-
-export type StepStatus = 'completed' | 'active' | 'locked';
+const OUTER = 32;
+const RING = 28;
+const STROKE = 8;
 
 export interface StepIndicatorProps {
-  /** Zero-based position of this step (also the number shown). */
   index: number;
-  /** Total number of steps in the timeline. */
   total: number;
-  /** Timeline progress — e.g. `2.3` fills step index 2 to 30%, `2.8` to 80%. */
   value: number;
 }
 
-export const StepIndicator = memo(({ index, total, value }: StepIndicatorProps) => {
-  const isFirst = index === 0;
-  const isLast = index === total - 1;
+export const StepIndicator = ({ index, total, value }: StepIndicatorProps) => {
+  const [height, setHeight] = useState(0);
+  const onLayout = (e: LayoutChangeEvent) => setHeight(e.nativeEvent.layout.height);
 
-  const fill = clamp(value - index, 0, 1);
-  const status: StepStatus = fill >= 1 ? 'completed' : fill > 0 ? 'active' : 'locked';
+  const fill = Math.max(0, Math.min(1, value - index));
+  const status = fill >= 1 ? 'completed' : fill > 0 ? 'active' : 'locked';
 
-  const topReached = value >= index;
+  const cx = STEP / 2;
+  const cy = height / 2;
+  const hasTop = index > 0;
+  const hasBottom = index < total - 1;
   const bottomComplete = value >= index + 1;
   const bottomActive = !bottomComplete && value > index;
 
-  // Animate the green arc whenever the fill changes (and on mount, from 0).
-  const animFill = useSharedValue(0);
-  useEffect(() => {
-    animFill.value = withTiming(fill, { duration: 500 });
-  }, [fill, animFill]);
-  const greenProps = useAnimatedProps(() => ({
-    strokeDashoffset: RING_C - animFill.value * RING_C,
-  }));
+  const arc = Skia.Path.Make();
+  arc.addArc(rect(cx - RING, cy - RING, RING * 2, RING * 2), -90, fill * 360);
 
   return (
-    <View style={styles.col}>
-      {!isFirst && (
-        <View
-          style={[
-            styles.lineTop,
-            { backgroundColor: topReached ? colors.progressGreen : colors.timelineGray },
-          ]}
-        />
-      )}
+    <View style={styles.col} onLayout={onLayout}>
+      <Canvas style={[styles.canvas, { height }]}>
+        {hasTop && (
+          <Rect
+            x={cx - STROKE / 2}
+            y={0}
+            width={STROKE}
+            height={cy}
+            color={value >= index ? colors.progressGreen : colors.timelineGray}
+          />
+        )}
 
-      {!isLast &&
-        (bottomComplete ? (
-          <View style={[styles.lineBottom, { backgroundColor: colors.progressGreen }]} />
-        ) : bottomActive ? (
-          <View style={styles.lineBottom}>
-            <Svg width={LINE_W} height="100%">
-              <Defs>
-                <LinearGradient id={`stepGrad${index}`} x1="0" y1="0" x2="0" y2="1">
-                  <Stop offset={0} stopColor={colors.progressGreen} />
-                  <Stop offset={1} stopColor={colors.timelineGray} />
-                </LinearGradient>
-              </Defs>
-              <Rect width={LINE_W} height="100%" fill={`url(#stepGrad${index})`} />
-            </Svg>
-          </View>
-        ) : (
-          <View style={[styles.lineBottom, { backgroundColor: colors.timelineGray }]} />
-        ))}
-
-      {status === 'completed' && (
-        <View style={styles.completedRing}>
-          <View style={styles.completedGap}>
-            <View style={styles.completedCore}>
-              <assets.RightIcon width={22} height={18} />
-            </View>
-          </View>
-        </View>
-      )}
-
-      {status === 'active' && (
-        <View style={styles.activeOuter}>
-          <Svg width={STEP} height={STEP} style={styles.activeRingSvg}>
-            {/* Gray track + green fill share one ring (no gap, no overlap). */}
-            <Circle cx={STEP / 2} cy={STEP / 2} r={RING_R} stroke={colors.timelineGray} strokeWidth={ARC_W} fill="none" />
-            <AnimatedCircle
-              cx={STEP / 2}
-              cy={STEP / 2}
-              r={RING_R}
-              stroke={colors.progressGreen}
-              strokeWidth={ARC_W}
-              strokeDasharray={RING_C}
-              animatedProps={greenProps}
-              strokeLinecap="round"
-              fill="none"
-              transform={`rotate(-90 ${STEP / 2} ${STEP / 2})`}
+        {hasBottom && bottomComplete && (
+          <Rect x={cx - STROKE / 2} y={cy} width={STROKE} height={cy} color={colors.progressGreen} />
+        )}
+        {hasBottom && bottomActive && (
+          <Rect x={cx - STROKE / 2} y={cy} width={STROKE} height={cy}>
+            <LinearGradient
+              start={vec(0, cy)}
+              end={vec(0, height)}
+              colors={[colors.progressGreen, colors.timelineGray]}
             />
-          </Svg>
-          <View style={styles.activeInner}>
-            <Text text={`${index + 1}`} style={styles.number} />
-          </View>
-        </View>
-      )}
+          </Rect>
+        )}
+        {hasBottom && !bottomComplete && !bottomActive && (
+          <Rect x={cx - STROKE / 2} y={cy} width={STROKE} height={cy} color={colors.timelineGray} />
+        )}
 
-      {status === 'locked' && (
-        <View style={styles.lockedCircle}>
-          <View style={styles.lockedInner}>
-            <Text text={`${index + 1}`} style={[styles.number, styles.numberLocked]} />
-          </View>
-        </View>
-      )}
+        {status === 'completed' && (
+          <>
+            <Circle cx={cx} cy={cy} r={OUTER} color={colors.progressGreen} />
+            <Circle cx={cx} cy={cy} r={24} color={colors.white} />
+            <Circle cx={cx} cy={cy} r={20} color={colors.progressGreen} />
+          </>
+        )}
+
+        {status === 'active' && (
+          <>
+            <Circle cx={cx} cy={cy} r={OUTER} color={colors.white} />
+            <Circle cx={cx} cy={cy} r={RING} color={colors.timelineGray} style="stroke" strokeWidth={STROKE} />
+            <Path path={arc} color={colors.progressGreen} style="stroke" strokeWidth={STROKE} strokeCap="round" />
+            <Circle cx={cx} cy={cy} r={22} color={colors.lightBlue} />
+          </>
+        )}
+
+        {status === 'locked' && (
+          <>
+            <Circle cx={cx} cy={cy} r={OUTER} color={colors.white} />
+            <Circle cx={cx} cy={cy} r={RING} color={colors.timelineGray} style="stroke" strokeWidth={STROKE} />
+            <Circle cx={cx} cy={cy} r={21} color={colors.timelineGray} style="stroke" strokeWidth={1.5} />
+          </>
+        )}
+      </Canvas>
+
+      <View style={styles.center} pointerEvents="none">
+        {status === 'completed' ? (
+          <assets.RightIcon width={22} height={18} />
+        ) : (
+          <Text text={`${index + 1}`} style={status === 'locked' ? styles.numberLocked : styles.number} />
+        )}
+      </View>
     </View>
   );
-});
-
-StepIndicator.displayName = 'StepIndicator';
+};

@@ -1,20 +1,15 @@
 import { StyleSheet } from 'react-native-unistyles';
 
-export type ButtonVariant = 'primary' | 'secondary' | 'outline';
-
 export const styles = StyleSheet.create(theme => ({
   base: {
-    minHeight: 52,
     borderRadius: theme.spacing.xs,
+    paddingVertical: 18,
     paddingHorizontal: theme.spacing.md,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  primary: {
+  fill: {
     backgroundColor: theme.colors.tint,
-  },
-  secondary: {
-    backgroundColor: theme.colors.secondary500,
   },
   outline: {
     backgroundColor: theme.colors.transparent,
@@ -27,6 +22,9 @@ export const styles = StyleSheet.create(theme => ({
   label: {
     fontFamily: theme.typography.primary.medium,
     fontSize: 16,
+    fontWeight: '500',
+    letterSpacing: -0.176,
+    textAlign: 'center',
     color: theme.colors.neutral100,
   },
   labelOutline: {

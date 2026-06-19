@@ -17,7 +17,7 @@ export type AuthStackParamList = {
 };
 
 export type UnAuthStackParamList = {
-  Login: undefined;
+  Onboarding: undefined;
 };
 
 export type RootStackParamList = {
@@ -50,6 +50,7 @@ declare global {
     interface RootParamList
       extends RootStackParamList,
         AuthStackParamList,
-        MainTabParamList {}
+        MainTabParamList,
+        UnAuthStackParamList {}
   }
 }

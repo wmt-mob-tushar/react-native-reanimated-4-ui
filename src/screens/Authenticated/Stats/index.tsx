@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { View, Pressable, ScrollView } from 'react-native';
-import { Dropdown } from 'react-native-element-dropdown';
+import * as DropdownMenu from 'zeego/dropdown-menu';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Screen, Text, BarChart, StreakCard } from '@/component';
 import { colors } from '@/theme';
@@ -40,21 +40,22 @@ const Stats = () => {
       <View style={styles.card}>
         <View style={styles.headerRow}>
           <Text tx="statsScreen:title" style={styles.title} />
-          <Dropdown
-            data={rangeOptions}
-            labelField="label"
-            valueField="value"
-            value={range}
-            onChange={item => selectRange(item.value)}
-            style={styles.dropdown}
-            selectedTextStyle={styles.dropdownText}
-            itemTextStyle={styles.dropdownText}
-            containerStyle={styles.dropdownList}
-            activeColor="rgba(28, 39, 76, 0.06)"
-            maxHeight={160}
-            dropdownPosition="bottom"
-            renderRightIcon={() => <Icon name="chevron-down" size={14} color={colors.primary} />}
-          />
+
+          <DropdownMenu.Root>
+            <DropdownMenu.Trigger>
+              <Pressable style={styles.dropdown}>
+                <Text text={rangeLabel} style={styles.dropdownText} />
+                <Icon name="chevron-down" size={14} color={colors.primary} />
+              </Pressable>
+            </DropdownMenu.Trigger>
+            <DropdownMenu.Content>
+              {rangeOptions.map(opt => (
+                <DropdownMenu.Item key={opt.value} onSelect={() => selectRange(opt.value)}>
+                  <DropdownMenu.ItemTitle>{opt.label}</DropdownMenu.ItemTitle>
+                </DropdownMenu.Item>
+              ))}
+            </DropdownMenu.Content>
+          </DropdownMenu.Root>
         </View>
 
         <Text text={`Avg improvement ${rangeLabel.toLowerCase()}`} style={styles.subtitle} />

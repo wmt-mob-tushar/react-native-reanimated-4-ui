@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native-unistyles';
 export const styles = StyleSheet.create(theme => ({
   card: {
     backgroundColor: '#F1F1F180',
-    borderRadius: 28,
+    borderRadius: 32,
     padding: 20,
   },
   header: {
@@ -35,7 +35,7 @@ export const styles = StyleSheet.create(theme => ({
   badgeTotal: {
     fontFamily: theme.typography.primary.medium,
     fontSize: 13,
-    color: 'rgba(28, 39, 76, 0.4)',
+    color: theme.colors.primary40,
   },
 
   // Progress track
@@ -94,7 +94,7 @@ export const styles = StyleSheet.create(theme => ({
     color: theme.colors.primary,
   },
   dayTodo: {
-    color: 'rgba(28, 39, 76, 0.35)',
+    color: theme.colors.primary35,
   },
 
   // Tip bar
@@ -114,6 +114,6 @@ export const styles = StyleSheet.create(theme => ({
     flex: 1,
     fontFamily: theme.typography.primary.normal,
     fontSize: 12,
-    color: 'rgba(28, 39, 76, 0.7)',
+    color: theme.colors.primary70,
   },
 }));

@@ -6,3 +6,4 @@ export * from './ui/CircularProgress';
 export * from './ui/StepIndicator';
 export * from './view/BarChart';
 export * from './view/StreakCard';
+export * from './view/LearnCard';

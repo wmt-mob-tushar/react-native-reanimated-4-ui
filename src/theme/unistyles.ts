@@ -30,6 +30,12 @@ export const appTheme = {
     const scale = UnistylesRuntime.screen.width / DESIGN_WIDTH;
     return Math.round(PixelRatio.roundToNearestPixel(size * scale));
   },
+  /**
+   * Figma rotation → RN rotate string. Figma is counter-clockwise-positive while
+   * RN/CSS `rotate` is clockwise-positive, so the angle is negated to match Figma.
+   * Usage: `transform: [{ rotate: theme.rotation(7.95) }]`.
+   */
+  rotation: (figmaDeg: number) => `${-figmaDeg}deg`,
 } as const;
 
 export const breakpoints = {

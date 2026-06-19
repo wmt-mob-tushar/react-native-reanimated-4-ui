@@ -7,15 +7,6 @@ const es: Translations = {
     back: 'Atrás',
     logOut: 'Cerrar sesión',
   },
-  loginScreen: {
-    title: 'Iniciar sesión',
-    subtitle: 'Ingresa tus datos para continuar.',
-    emailFieldLabel: 'Correo electrónico',
-    passwordFieldLabel: 'Contraseña',
-    emailFieldPlaceholder: 'Ingresa tu correo electrónico',
-    passwordFieldPlaceholder: 'Ingresa tu contraseña',
-    tapToLogIn: 'Toca para iniciar sesión',
-  },
   tabs: {
     home: 'Inicio',
     learn: 'Aprender',
@@ -27,6 +18,12 @@ const es: Translations = {
     title: 'Inicio',
     welcome: '¡Bienvenido de nuevo!',
     viewDetails: 'Ver lecciones',
+    hello: 'Hola',
+    greeting: 'Buenos días',
+  },
+  learnSection: {
+    title: 'Aprendamos',
+    startLearning: 'Empezar a aprender',
   },
   detailsScreen: {
     label: 'Lección de hoy',
@@ -52,6 +49,10 @@ const es: Translations = {
   streakCard: {
     title: 'Tu racha',
     tip: 'Aprendes mejor con lecciones rápidas de 5 min.',
+  },
+  homeCard: {
+    todaysPick: 'Elección de hoy: Formas',
+    complete: 'completado',
   },
   settingsScreen: {
     title: 'Ajustes',
